@@ -1,16 +1,19 @@
 package com.artevseev.PairGamesTgBot.service;
 
 import com.artevseev.PairGamesTgBot.config.BotConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import static com.artevseev.PairGamesTgBot.service.Funcs.isNumber;
 import static com.artevseev.PairGamesTgBot.service.Funcs.reverseText;
 
+@Slf4j  // Для записей в логи
 @Component  // Позволяет автоматически создать экземпляр
 public class PairGamesBot extends TelegramLongPollingBot {
 
@@ -50,6 +53,7 @@ public class PairGamesBot extends TelegramLongPollingBot {
                     sendMessage(chatId, "Тут будет раздел с текстовыми играми");
                     break;
                 default: defaultDoing(chatId, update.getMessage().getText());
+                log.info("Calling default function in chat " + update.getMessage().getChatId());
             }
         }
     }
@@ -61,7 +65,7 @@ public class PairGamesBot extends TelegramLongPollingBot {
         try {
             execute(sendMessage);
         } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
+            log.error("Error with sending message: " + e.getMessage());    // Переменная из аннотации Slf4j
         }
     }
 

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.PropertySource;
 
 @Configuration
 @PropertySource("application.properties")   //Файл, из которого будем брать значения @Value
-@Data   // Автоматически создаёт конструкторы класса
+@Data   // Автоматически создаёт конструкторы и геттеры/сеттеры класса
 public class BotConfig {
     @Value("${bot.name}")
     String botName;
